@@ -1,0 +1,39 @@
+{% extends 'account/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}<title>Danielle - Cadastro</title>{% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+  <div class="col-xl-10 col-lg-12 col-md-9">
+    <div class="card o-hidden border-0 shadow-lg my-5">
+      <div class="card-body p-0">
+        <!-- Nested Row within Card Body -->
+        <div class="row" style="min-height:80vh;">
+          <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
+          <div class="col-lg-6 my-auto">
+            <div class="px-5">
+              <div class="text-center">
+                <h1 class="h4 text-gray-900 mb-2">Cadastro</h1>
+                {% include 'messages.html' %}
+              </div>
+              <form class="user" method="post">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <button type="submit" class="btn btn-primary btn-user btn-block">
+                  Cadastrar
+                </button>
+                <div class="text-center mt-2">
+                  <a class="small" href="/accounts/login/">Login</a>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}

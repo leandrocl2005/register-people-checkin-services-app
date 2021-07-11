@@ -1,0 +1,87 @@
+{% extends 'base.html' %} {% load static %}
+
+{% block title %}
+    <h1 id="page-title"></h1>
+{% endblock %}
+
+{% block content %} 
+  <div class="card shadow mb-4">
+    <div
+      class="card-header py-3"
+      style="display: flex; align-items: center; justify-content: space-between"
+    >
+      <h6 class="m-0 font-weight-bold text-primary">Checkins</h6>
+      <a href="cadastrar/"
+        ><i class="fa fa-plus" aria-hidden="true"></i
+      ></a>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table
+          class="table table-bordered"
+          id="dataTable"
+          width="100%"
+          cellspacing="0"
+        >
+          <thead>
+            <tr>
+              <th>Paciente</th>
+              <th>Acompanhante</th>
+              <th>Entrada</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tfoot>
+            <tr>
+              <th>Paciente</th>
+              <th>Acompanhante</th>
+              <th>Entrada</th>
+              <th>Ações</th>
+            </tr>
+          </tfoot>
+          <tbody>
+            {% for checkin in checkins %}
+            <tr>
+              <td>{{checkin.person__name}}</td>
+              <td>{{checkin.companion__name}}</td>
+              <td>{{checkin.created_at}}</td>
+              <td>
+                {% if checkin.active %}
+                  <div class="d-inline-flex">
+
+                    <a class="btn btn-sm btn-primary mr-1" role="button" href="/checkins/pacientes/{{checkin.id}}/editar/">
+                      Editar
+                    </a>
+                    <form onsubmit="return confirm('Você realmente deseja fechar este checkin? Esta operação é irreversível!');" action="/checkins/pacientes/{{checkin.id}}/fechar/" method="POST">
+                      {% csrf_token %}
+                      <button type="submit" class="btn btn-sm btn-danger">Fechar</button>
+                    </form>
+                  </div>
+                {% else %}
+                  Checkin fechado
+                {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+  <script>
+    window.onload = function() {
+      const pathname = window.location.pathname;
+      const pageTitle = $('#page-title');
+      if (pathname.includes("pacientes")){
+        pageTitle.text("Checkins de pacientes");
+      } else if (pathname.include("acompanhantes")) {
+        pageTitle.text("Checkins de acompanhantes");
+      } else {
+        pageTitle.text("Outros checkins");
+      }
+    };
+  </script>
+{% endblock %}

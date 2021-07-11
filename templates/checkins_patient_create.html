@@ -1,0 +1,12 @@
+{% extends 'base.html' %} 
+
+{% load static %} 
+{% load crispy_forms_tags %}
+
+{% block title %}
+  <h1>Checkin de paciente</h1>
+{% endblock %}
+
+{% block content %}
+  {% crispy form %}
+{% endblock %}

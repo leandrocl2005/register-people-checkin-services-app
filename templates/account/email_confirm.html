@@ -1,0 +1,55 @@
+{% extends "account/base.html" %}
+
+{% load crispy_forms_tags %}
+{% load i18n %}
+{% load account %}
+
+{% block title %}<title>Danielle - Confirmar E-mail</title>{% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+  <div class="col-xl-10 col-lg-12 col-md-9">
+    <div class="card o-hidden border-0 shadow-lg my-5">
+      <div class="card-body p-0">
+        <!-- Nested Row within Card Body -->
+        <div class="row" style="min-height:80vh; ">
+          <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
+          <div class="col-lg-6  my-auto">
+            <div class="px-5">
+              <div class="text-center">
+                <h1 class="h4 text-gray-900 mb-2">{% trans "Confirm E-mail Address" %}</h1>
+                {% include 'messages.html' %}
+              </div>
+              {% if confirmation %}
+
+              {% user_display confirmation.email_address.user as user_display %}
+
+              <p>{% blocktrans with confirmation.email_address.email as email %}Por favor, confirme que <a
+                  href="mailto:{{ email }}">{{ email }}</a> é um e-mail válido para o usuário
+                {{ user_display }}.{% endblocktrans %}</p>
+
+              <form method="post" action="{% url 'account_confirm_email' confirmation.key %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary btn-user btn-block">
+                  {% trans 'Confirm' %}
+                </button>
+              </form>
+
+              {% else %}
+
+              {% url 'account_email' as email_url %}
+
+              <p>{% blocktrans %}This e-mail confirmation link expired or is invalid. Please <a
+                  href="{{ email_url }}">issue a new e-mail confirmation request</a>.{% endblocktrans %}</p>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}
